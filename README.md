@@ -116,7 +116,7 @@ $ sudo tar -xvzf hadoop-*.tar.gz -C /usr/local/ && sudo mv /usr/local/hadoop-* /
 ```
 ## Setup Environment Variables for Hadoop
 
-# Note : Go to root folder and type ```ls -a``` to find the ```.bashrc``` file
+### Note : Go to root folder and type ```ls -a``` to find the ```.bashrc``` file
 
 Add the following entries to ```.bashrc``` file
 
@@ -156,7 +156,7 @@ The last line gives read and write permissions to the /app/hadoop/tmp directory
 
 Error: If you forget to set the required ownerships and permissions, you will see a java.io.IO Exception when you try to format the name node.
 
-Go to the core-site.xml file and update changes given below.
+Go to the ```core-site.xml``` file and update changes given below.
 
 path : ```$HADOOP_HOME/etc/hadoop/core-site.xml```
 
@@ -178,9 +178,9 @@ Paste the following between ```<configuration></configuration>```
     determine the host, port, etc. for a filesystem.</description>
 </property>
 ```
-Go to the mapred-site.xml file and update changes given below.
+Go to the ```mapred-site.xml``` file and update changes given below.
 
-Path : $HADOOP_HOME/etc/hadoop/mapred-site.xml
+Path : ```$HADOOP_HOME/etc/hadoop/mapred-site.xml```
 ```bash
 <property>
     <name>mapred.job.tracker</name>
@@ -192,7 +192,7 @@ Path : $HADOOP_HOME/etc/hadoop/mapred-site.xml
 </property>
 ```
 
-And In file $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+And In file ```$HADOOP_HOME/etc/hadoop/hdfs-site.xml```
 ```bash
 <property>
     <name>dfs.replication</name>
