@@ -109,7 +109,7 @@ Start by switching to ```petabytzuser1```
 ```bash
 petabytzuser@petabytz:~$ su - ```petabytzuser1```
 ```
-Download and extract last version Hadoop binary code from hadoop.apache.org. I use current stable version Hadoop 3.2.0.
+Download and extract last version Hadoop binary code from [hadoop.apache.org](https://hadoop.apache.org/). I use current stable version Hadoop 3.2.0.
 ```bash
 $ wget http://ftp.tc.edu.tw/pub/Apache/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz
 $ sudo tar -xvzf hadoop-*.tar.gz -C /usr/local/ && sudo mv /usr/local/hadoop-* /usr/local/hadoop
