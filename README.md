@@ -139,7 +139,7 @@ $ source ~/.bashrc
 
 Go to the hadoop-env.sh file and update changes given below.
 
-path : $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+path : ```$HADOOP_HOME/etc/hadoop/hadoop-env.sh```
 ```bash
 export JAVA_HOME=${JAVA_HOME}
 
@@ -158,7 +158,7 @@ Error: If you forget to set the required ownerships and permissions, you will se
 
 Go to the core-site.xml file and update changes given below.
 
-path : $HADOOP_HOME/etc/hadoop/core-site.xml
+path : ```$HADOOP_HOME/etc/hadoop/core-site.xml```
 
 Paste the following between ```<configuration></configuration>```
 ```
