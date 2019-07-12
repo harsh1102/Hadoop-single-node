@@ -46,17 +46,17 @@ Secondary Namenode whole purpose is to have a checkpoint in HDFS. It is just a h
 
 Hadoop requires Java to be installed, so let’s begin by installing Java, update the source list:
 ```bash
-user@ubuntu:~$ sudo apt-get update
+petabytzuser@petabytz:~$ sudo apt-get update
 ```
 
 The OpenJDK project is the default version of Java, that is provided from a supported Ubuntu repository.
 ```bash
-user@ubuntu:~$ sudo apt-get install openjdk-8-jdk
+petabytzuser@petabytz:~$ sudo apt-get install openjdk-8-jdk
 ```
 
 These commands will update the package information on your server and then install Java. After executing these commands, execute the following command to verify that Java has been installed:
 ```bash
-user@ubuntu:~$ java -version
+petabytzuser@petabytz:~$ java -version
 ```
 If Java has been installed, this should display the version details as illustrated in the following output:
 ```bash
@@ -68,35 +68,35 @@ If you already have Java JDK installed on your system, then you need not run the
 
 ## Adding a dedicated Hadoop system user
 ```bash
-user@ubuntu:~$ sudo addgroup hadoop_group
-user@ubuntu:~$ sudo adduser --ingroup hadoop_group hduser1
+petabytzuser@petabytz:~$ sudo addgroup hadoop_petabytz_group
+petabytzuser@petabytz:~$ sudo adduser --ingroup hadoop_petabytz_group petabytzuser1
 ```
-This will add the user hduser1 and the group hadoop_group to the local machine. Add hduser1 to the sudo group:
+This will add the user petabytzuser1 and the group hadoop_group to the local machine. Add petabytzuser1 to the sudo group:
 ```bash
-user@ubuntu:~$ sudo adduser hduser1 sudo
+petabytzuser@petabytz:~$ sudo adduser petabytzuser1 sudo
 ```
 
 ## Configuring SSH
 
 The hadoop control scripts rely on SSH to peform cluster-wide operations. For example, there is a script for stopping and starting all the daemons in the clusters. To work seamlessly, SSh needs to be etup to allow password-less login for the hadoop user from machines in the cluster. The simplest ay to achive this is to generate a public/private key pair, and it will be shared across the cluster.
 
-Hadoop requires SSH access to manage its nodes, i.e. remote machines plus your local machine. For our single-node setup of Hadoop, we therefore need to configure SSH access to localhost for the hduser user we created in the earlier.
+Hadoop requires SSH access to manage its nodes, i.e. remote machines plus your local machine. For our single-node setup of Hadoop, we therefore need to configure SSH access to localhost for the hadoop user user we created in the earlier.
 
-We have to generate an SSH key for the hduser1 user.
+We have to generate an SSH key for the petabytzuser1 user.
 ```bash
-user@ubuntu:~$ su - hduser1
-hduser1@ubuntu:~$ ssh-keygen -t rsa -P ''
+petabytzuser@petabytz:~$ su - petabytzuser1
+petabytzuser1@petabytz:~$ ssh-keygen -t rsa -P ''
 ```
 -P '', here indicates an empty password
 
 You have to enable SSH access to your local machine with this newly created key which is done by the following command:
 ```bash
-hduser1@ubuntu:~$ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+petabytzuser1@petabytz:~$ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 ```
 
-The final step is to test the SSH setup by connecting to the local machine with the hduser1 user. The step is also needed to save your local machine’s host key fingerprint to the hduser1 user’s known hosts file.
+The final step is to test the SSH setup by connecting to the local machine with the ```petabytzuser1``` user. The step is also needed to save your local machine’s host key fingerprint to the ```petabytzuser1``` user’s known hosts file.
 ```bash
-hduser1@ubuntu:~$ ssh localhost
+petabytzuser1@petabytz:~$ ssh localhost
 ```
 If the SSH connection fails, we can try the following (optional):
 
@@ -105,18 +105,20 @@ If the SSH connection fails, we can try the following (optional):
 
 ## Main Installation
 
-Start by switching to hduser1
+Start by switching to ```petabytzuser1```
 ```bash
-user@ubuntu:~$ su - hduser1
+petabytzuser@petabytz:~$ su - ```petabytzuser1```
 ```
-Download and extract last version Hadoop binary code from hadoop.apache.org. I use current stable version Hadoop 2.7.2.
+Download and extract last version Hadoop binary code from hadoop.apache.org. I use current stable version Hadoop 3.2.0.
 ```bash
-$ wget http://ftp.tc.edu.tw/pub/Apache/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz
+$ wget http://ftp.tc.edu.tw/pub/Apache/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz
 $ sudo tar -xvzf hadoop-*.tar.gz -C /usr/local/ && sudo mv /usr/local/hadoop-* /usr/local/hadoop
 ```
-Setup Environment Variables for Hadoop
+## Setup Environment Variables for Hadoop
 
-Add the following entries to .bashrc file
+# Note : Go to root folder and type ```ls -a``` to find the ```.bashrc``` file
+
+Add the following entries to ```.bashrc``` file
 
 Set Hadoop-related environment variables:
 ```bash
@@ -125,6 +127,7 @@ export HADOOP_HOME=/usr/local/hadoop
 # Add Hadoop bin/ directory to PATH
 export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 ```
+
 Make change to take effect:
 ```bash
 $ source ~/.bashrc
@@ -145,9 +148,9 @@ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
 Now we create the directory and set the required ownerships and permissions
 ```bash
-hduser1@ubuntu:~$ sudo mkdir -p /app/hadoop/tmp
-hduser1@ubuntu:~$ sudo chown hduser1:hadoop_group /app/hadoop/tmp
-hduser1@ubuntu:~$ sudo chmod 750 /app/hadoop/tmp
+petabytzuser1@petabytz:~$ sudo mkdir -p /app/hadoop/tmp
+petabytzuser1@petabytz:~$ sudo chown petabytzuser1:hadoop_petabytz_group /app/hadoop/tmp
+petabytzuser1@petabytz:~$ sudo chmod 750 /app/hadoop/tmp
 ```
 The last line gives read and write permissions to the /app/hadoop/tmp directory
 
@@ -210,18 +213,18 @@ Never format, up and running Hadoop filesystem. You will lose all your data stor
 
 To format the filesystem (which simply initializes the directory specified by the dfs.name.dir variable). Run the command
 ```bash
-hduser1@ubuntu:~$ hdfs namenode -format
+petabytzuser1@petabytz:~$ hdfs namenode -format
 ```
 ### Starting single-node cluster
 
 Run the command (start-dfs.sh & start-yarn.sh OR start-all.sh)
 ```bash
-hduser1@ubuntu:~$ start-dfs.sh && start-yarn.sh
+petabytzuser1@petabytz:~$ start-dfs.sh && start-yarn.sh
 ```
 
 This will startup a Namenode, DataNode, ResourceManager and a NodeManager on the machine. Verify this by typing in the following command:
 ```bash
-hduser1@ubuntu:~$ jps
+petabytzuser1@petabytz:~$ jps
 9237 NameNode
 10293 Jps
 9783 ResourceManager
@@ -236,9 +239,11 @@ If you can see a result similar to the depicted in the screenshot above, it mean
 
 We run stop-dfs.sh && stop-yarn.sh (or stop-all.sh) to stop all the daemons running on our machine:
 ```bash
-hduser1@ubuntu:~$ stop-dfs.sh && stop-yarn.sh
+petabytzuser1@petabytz:~$ stop-dfs.sh && stop-yarn.sh
 ```
 
 ## Hadoop Web Interfaces
 
 ```http://localhost:9870``` – web UI of the NameNode daemon
+
+You can run ```http://localhost:8088``` for verfiying hadoop installation is successfully done or not. You can check find clusters and active nodes in thi UI.
